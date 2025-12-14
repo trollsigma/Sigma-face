@@ -1,2 +1,2 @@
 # Sigma-face
-Troll troll Việt Nam hẹ hẹ hẹ
+Ấn vào là bạn sẽ lộ ip
