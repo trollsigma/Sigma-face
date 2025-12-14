@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Web ghi nhận IP</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .box {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 400px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="box">
+    <h2>Trang web đang hoạt động</h2>
+    <p id="status">Đang gửi thông tin truy cập...</p>
+</div>
+
+<!-- EmailJS -->
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+<script>
+    // ✅ THÔNG TIN EMAILJS (ĐÃ ĐẦY ĐỦ)
+    const EMAILJS_PUBLIC_KEY = "IN7hif-GDxhAv9Eyq";
+    const EMAILJS_SERVICE_ID = "service_bb9m4wq";
+    const EMAILJS_TEMPLATE_ID = "template_myeqwig";
+
+    (function () {
+        emailjs.init(EMAILJS_PUBLIC_KEY);
+    })();
+
+    fetch("https://api.ipify.org?format=json")
+        .then(res => res.json())
+        .then(data => {
+            return emailjs.send(
+                EMAILJS_SERVICE_ID,
+                EMAILJS_TEMPLATE_ID,
+                {
+                    visitor_ip: data.ip,
+                    user_agent: navigator.userAgent,
+                    time: new Date().toLocaleString()
+                }
+            );
+        })
+        .then(() => {
+            document.getElementById("status").innerText =
+                "✔ IP đã được gửi về Gmail chủ web.";
+        })
+        .catch(err => {
+            document.getElementById("status").innerText =
+                "❌ Lỗi gửi IP. Kiểm tra EmailJS.";
+            console.error(err);
+        });
+</script>
+
+</body>
+</html>
